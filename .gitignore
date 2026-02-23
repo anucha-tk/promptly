@@ -26,3 +26,6 @@ logs
 ARCHITECT_CONTEXT.mdc
 docs
 .cursor
+
+keys/
+api-doc
