@@ -1,4 +1,18 @@
-# Nuxt Minimal Starter
+# Promptly
+
+A Nuxt 4 app with Vue 3, Tailwind CSS, and a full lint/format and git-hooks setup.
+
+## Stack
+
+- **[Nuxt 4](https://nuxt.com)** – Vue framework (SSR, routing, build)
+- **[Vue 3](https://vuejs.org)** – UI (Composition API, `<script setup>`)
+- **[Tailwind CSS v4](https://tailwindcss.com)** – Styling (via `@tailwindcss/vite`)
+- **[ESLint](https://eslint.org)** – Linting (`@nuxt/eslint-config` flat config)
+- **[Prettier](https://prettier.io)** – Formatting
+- **[Lefthook](https://github.com/evilmartians/lefthook)** – Git hooks (pre-commit: lint-staged)
+- **[Commitlint](https://commitlint.io)** + **Commitizen** – Conventional commits
+
+## Setup
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
@@ -10,8 +24,8 @@ Make sure to install dependencies:
 # npm
 npm install
 
-# pnpm
-pnpm install
+# bun
+bun install
 
 # yarn
 yarn install
@@ -28,8 +42,8 @@ Start the development server on `http://localhost:3000`:
 # npm
 npm run dev
 
-# pnpm
-pnpm dev
+# bun
+bun dev
 
 # yarn
 yarn dev
@@ -46,8 +60,8 @@ Build the application for production:
 # npm
 npm run build
 
-# pnpm
-pnpm build
+# bun
+bun build
 
 # yarn
 yarn build
@@ -62,8 +76,8 @@ Locally preview production build:
 # npm
 npm run preview
 
-# pnpm
-pnpm preview
+# bun
+bun preview
 
 # yarn
 yarn preview

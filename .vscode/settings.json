@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Nuxt"],
+  "cSpell.words": ["Firestore", "Nuxt", "Promtpty"],
   "prettier.enable": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
