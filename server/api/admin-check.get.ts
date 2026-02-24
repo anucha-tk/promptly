@@ -13,7 +13,6 @@ export default defineEventHandler(() => {
         'Firebase Admin SDK initialized. Enable Firestore and/or Auth in Google Cloud Console when you need them.',
     };
   } catch (error: unknown) {
-    console.error('Admin Check Error:', error);
     const message = error instanceof Error ? error.message : String(error);
     throw createError({
       statusCode: 500,

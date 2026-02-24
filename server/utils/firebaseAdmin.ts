@@ -3,7 +3,6 @@ import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
 export const initAdmin = () => {
-  // 1. ถ้ามี App อยู่แล้วให้ใช้ตัวเดิม (Singleton)
   if (getApps().length > 0) {
     return getApp();
   }
@@ -15,11 +14,8 @@ export const initAdmin = () => {
   }
 
   try {
-    // 2. ตรวจสอบว่า JSON สตริงสมบูรณ์ไหม
     const serviceAccount = JSON.parse(saData);
 
-    // 3. ปรับแต่งเรื่อง Private Key (สำคัญมาก)
-    // บางครั้งการก๊อปปี้ \n ใน .env ทำให้ SDK อ่านค่าไม่ได้
     if (serviceAccount.private_key) {
       serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
     }
