@@ -39,7 +39,7 @@ function isActive(to: string) {
   <header
     class="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
   >
-    <div class="container flex h-14 items-center justify-between px-4">
+    <div class="flex h-14 items-center justify-between px-4">
       <NuxtLink to="/" class="flex items-center gap-2 font-semibold">
         <span class="text-foreground">CleanSync</span>
       </NuxtLink>
