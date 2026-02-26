@@ -1,70 +1,90 @@
 <script setup lang="ts">
 import { collection, query, where } from 'firebase/firestore';
 
-// 1. เข้าถึง Firestore instance
 const db = useFirestore();
-// 2. ดึง User ปัจจุบัน (Reactive)
 const user = useCurrentUser();
 
-// 3. สร้าง Query (จะทำงานเมื่อ user ล็อกอินแล้ว)
 const bookingsQuery = computed(() => {
   if (!user.value) return null;
   return query(collection(db, 'bookings'), where('clientUid', '==', user.value.uid));
 });
 
-// 4. Bind ข้อมูลแบบ Real-time
 const bookings = useCollection(bookingsQuery);
+
+function formatSlot(value: unknown): string {
+  if (!value) return '—';
+  const d =
+    typeof value === 'object' && value !== null && 'toDate' in value
+      ? (value as { toDate(): Date }).toDate()
+      : value instanceof Date
+        ? value
+        : null;
+  return d ? d.toLocaleString() : '—';
+}
+
+function statusClass(status: string): string {
+  const map: Record<string, string> = {
+    pending: 'bg-muted text-muted-foreground',
+    confirmed: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    in_progress: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+    completed: 'bg-muted text-muted-foreground',
+    cancelled: 'bg-destructive/10 text-destructive',
+  };
+  return map[status] ?? 'bg-muted text-muted-foreground';
+}
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto p-6">
-    <h1 class="text-3xl font-bold mb-6">My Bookings</h1>
+  <div class="container px-4 py-8">
+    <h1 class="text-3xl font-bold tracking-tight text-foreground">My Bookings</h1>
 
-    <div v-if="!user" class="p-6 bg-amber-50 border border-amber-200 rounded-lg text-center">
-      <p class="text-amber-800 font-medium">Please log in to see your bookings.</p>
-      <NuxtLink
-        to="/login"
-        class="inline-block mt-4 px-5 py-2.5 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition"
-      >
-        Sign in
+    <div
+      v-if="!user"
+      class="mt-6 rounded-lg border border-border bg-card p-6 text-center shadow-sm"
+    >
+      <p class="font-medium text-foreground">Please log in to see your bookings.</p>
+      <NuxtLink to="/login" class="mt-4 inline-block">
+        <Button>Sign in</Button>
       </NuxtLink>
     </div>
 
-    <div v-else>
-      <div v-if="bookings.length === 0" class="py-10 text-center border-2 border-dashed rounded">
-        <p class="text-gray-500">No bookings found. Add one in Firebase Console to test!</p>
+    <template v-else>
+      <div
+        v-if="!bookings?.length"
+        class="mt-6 rounded-lg border-2 border-dashed border-border py-12 text-center"
+      >
+        <p class="text-muted-foreground">
+          No bookings found. Add one in Firebase Console to test real-time updates.
+        </p>
       </div>
 
-      <div class="grid gap-4">
+      <div v-else class="mt-6 grid gap-4">
         <div
           v-for="booking in bookings"
           :key="booking.id"
-          class="p-4 border rounded-lg shadow-sm flex justify-between items-center bg-white"
+          class="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
         >
-          <div>
-            <p class="font-semibold text-lg">{{ booking.clientDisplayName || 'Anonymous' }}</p>
-            <p class="text-sm text-gray-500">{{ booking.slotStart?.toDate().toLocaleString() }}</p>
+          <div class="min-w-0">
+            <p class="font-semibold text-foreground">
+              {{ booking.clientDisplayName ?? 'Anonymous' }}
+            </p>
+            <p class="text-muted-foreground text-sm">
+              {{ formatSlot(booking.slotStart) }}
+            </p>
           </div>
-          <div class="flex items-center gap-4">
+          <div class="flex flex-wrap items-center gap-3">
             <span
-              class="px-3 py-1 rounded-full text-xs font-medium uppercase"
-              :class="
-                booking.status === 'confirmed'
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-gray-100 text-gray-700'
-              "
+              class="inline-flex rounded-full px-3 py-1 text-xs font-medium uppercase"
+              :class="statusClass(booking.status ?? 'pending')"
             >
-              {{ booking.status }}
+              {{ booking.status ?? 'pending' }}
             </span>
-            <NuxtLink
-              :to="`/bookings/${booking.id}`"
-              class="text-blue-600 hover:text-blue-800 font-medium"
-            >
-              Details →
+            <NuxtLink :to="`/bookings/${booking.id}`">
+              <Button variant="outline" size="sm"> Details → </Button>
             </NuxtLink>
           </div>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>

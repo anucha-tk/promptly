@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   alias: {
     '@': fileURLToPath(new URL('./app', import.meta.url)),
+    '~shared': fileURLToPath(new URL('./shared', import.meta.url)),
   },
   css: ['./app/assets/css/main.css'],
   vite: {
