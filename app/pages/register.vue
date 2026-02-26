@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
-import { loginSchema, type LoginInput } from '../schemas/auth';
+import { registerSchema, type RegisterInput } from '../schemas/auth';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 const route = useRoute();
-const { login, isPending, error: authError } = useAuth();
+const { register, isPending, error: authError } = useAuth();
 
-const form = useForm<LoginInput>({
-  validationSchema: toTypedSchema(loginSchema),
-  initialValues: { email: '', password: '' },
+const form = useForm<RegisterInput>({
+  validationSchema: toTypedSchema(registerSchema),
+  initialValues: { email: '', password: '', confirmPassword: '' },
 });
 
 const redirectTo = computed(() => {
@@ -21,8 +21,8 @@ const redirectTo = computed(() => {
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  const { email, password } = values as LoginInput;
-  const user = await login(String(email), String(password));
+  const { email, password } = values as RegisterInput;
+  const user = await register(String(email), String(password));
   if (user) {
     await navigateTo(redirectTo.value, { replace: true });
   }
@@ -32,8 +32,8 @@ const onSubmit = form.handleSubmit(async (values) => {
 <template>
   <div class="flex flex-1 flex-col items-center justify-center px-4 py-12">
     <div class="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">
-      <h1 class="text-2xl font-bold tracking-tight text-foreground">Sign in</h1>
-      <p class="mt-1 text-sm text-muted-foreground">Use your email and password.</p>
+      <h1 class="text-2xl font-bold tracking-tight text-foreground">Sign up</h1>
+      <p class="mt-1 text-sm text-muted-foreground">Create an account with your email.</p>
 
       <form class="mt-6 space-y-4" @submit="onSubmit">
         <FormField v-slot="{ field, handleChange, handleBlur }" name="email">
@@ -61,7 +61,25 @@ const onSubmit = form.handleSubmit(async (values) => {
               <Input
                 :model-value="field.value"
                 type="password"
-                autocomplete="current-password"
+                autocomplete="new-password"
+                placeholder="••••••••"
+                :disabled="isPending"
+                @update:model-value="handleChange"
+                @blur="handleBlur"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <FormField v-slot="{ field, handleChange, handleBlur }" name="confirmPassword">
+          <FormItem>
+            <FormLabel>Confirm password</FormLabel>
+            <FormControl>
+              <Input
+                :model-value="field.value"
+                type="password"
+                autocomplete="new-password"
                 placeholder="••••••••"
                 :disabled="isPending"
                 @update:model-value="handleChange"
@@ -77,22 +95,22 @@ const onSubmit = form.handleSubmit(async (values) => {
         </p>
 
         <Button type="submit" class="w-full" :disabled="isPending">
-          {{ isPending ? 'Signing in…' : 'Sign in' }}
+          {{ isPending ? 'Creating account…' : 'Sign up' }}
         </Button>
       </form>
 
       <p class="mt-6 text-center text-sm text-muted-foreground">
-        Don't have an account?
+        Already have an account?
         <NuxtLink
           :to="
-            '/register' +
+            '/login' +
             (route.query.redirect
               ? '?redirect=' + encodeURIComponent(String(route.query.redirect))
               : '')
           "
           class="text-primary underline-offset-4 hover:underline"
         >
-          Sign up
+          Sign in
         </NuxtLink>
       </p>
       <p class="mt-2 text-center text-sm text-muted-foreground">

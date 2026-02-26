@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { collection, query, where } from 'firebase/firestore';
 
+// @ts-expect-error Nuxt resolves named middleware at build time; types expect NavigationGuard
+definePageMeta({ middleware: ['auth'] });
+
 const db = useFirestore();
 const user = useCurrentUser();
 
@@ -35,8 +38,13 @@ function statusClass(status: string): string {
 </script>
 
 <template>
-  <div class="container px-4 py-8">
-    <h1 class="text-3xl font-bold tracking-tight text-foreground">My Bookings</h1>
+  <div class="px-4 py-8">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <h1 class="text-3xl font-bold tracking-tight text-foreground">My Bookings</h1>
+      <NuxtLink v-if="user" to="/bookings/new">
+        <Button>New booking</Button>
+      </NuxtLink>
+    </div>
 
     <div
       v-if="!user"
@@ -53,9 +61,10 @@ function statusClass(status: string): string {
         v-if="!bookings?.length"
         class="mt-6 rounded-lg border-2 border-dashed border-border py-12 text-center"
       >
-        <p class="text-muted-foreground">
-          No bookings found. Add one in Firebase Console to test real-time updates.
-        </p>
+        <p class="text-muted-foreground">No bookings yet.</p>
+        <NuxtLink to="/bookings/new" class="mt-4 inline-block">
+          <Button>Create your first booking</Button>
+        </NuxtLink>
       </div>
 
       <div v-else class="mt-6 grid gap-4">

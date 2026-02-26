@@ -1,11 +1,52 @@
 <script setup lang="ts">
+import type { BookingStatus } from '~shared/schemas/booking';
 import { doc } from 'firebase/firestore';
+
+// @ts-expect-error Nuxt resolves named middleware at build time; types expect NavigationGuard
+definePageMeta({ middleware: ['auth'] });
 
 const route = useRoute();
 const db = useFirestore();
+const user = useCurrentUser();
+const { updateBookingStatus } = useBookingsApi();
 
 const bookingRef = computed(() => doc(db, 'bookings', route.params.id as string));
 const { data: booking, pending, error } = useDocument(bookingRef);
+
+const statusUpdatePending = ref(false);
+const statusError = ref<string | null>(null);
+
+const allowedNextStatuses = computed((): BookingStatus[] => {
+  const status = (booking.value?.status as BookingStatus) ?? 'pending';
+  const map: Record<BookingStatus, BookingStatus[]> = {
+    pending: ['confirmed', 'cancelled'],
+    confirmed: ['in_progress', 'cancelled'],
+    in_progress: ['completed'],
+    completed: [],
+    cancelled: [],
+  };
+  return map[status] ?? [];
+});
+
+const canUpdateStatus = computed(() => {
+  if (!user.value || !booking.value) return false;
+  const uid = user.value.uid;
+  return uid === booking.value.clientUid || uid === booking.value.providerId;
+});
+
+async function setStatus(newStatus: BookingStatus) {
+  const id = route.params.id as string;
+  statusError.value = null;
+  statusUpdatePending.value = true;
+  try {
+    await updateBookingStatus(id, newStatus);
+  } catch (e: unknown) {
+    const err = e as { data?: { message?: string } };
+    statusError.value = err?.data?.message ?? 'Failed to update status.';
+  } finally {
+    statusUpdatePending.value = false;
+  }
+}
 
 function formatSlot(value: unknown): string {
   if (!value) return '—';
@@ -31,7 +72,7 @@ function statusClass(status: string): string {
 </script>
 
 <template>
-  <div class="container px-4 py-8">
+  <div class="px-4 py-8">
     <NuxtLink
       to="/bookings"
       class="text-muted-foreground hover:text-foreground mb-4 inline-block text-sm"
@@ -105,6 +146,33 @@ function statusClass(status: string): string {
           </dd>
         </div>
       </dl>
+
+      <div v-if="canUpdateStatus && allowedNextStatuses.length" class="border-t border-border p-4">
+        <p class="text-muted-foreground text-sm font-medium">Update status</p>
+        <p v-if="statusError" class="text-destructive mt-1 text-sm">{{ statusError }}</p>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <Button
+            v-for="next in allowedNextStatuses"
+            :key="next"
+            variant="outline"
+            size="sm"
+            :disabled="statusUpdatePending"
+            @click="setStatus(next)"
+          >
+            {{
+              next === 'cancelled'
+                ? 'Cancel'
+                : next === 'in_progress'
+                  ? 'Mark in progress'
+                  : next === 'completed'
+                    ? 'Mark completed'
+                    : next === 'confirmed'
+                      ? 'Confirm'
+                      : next
+            }}
+          </Button>
+        </div>
+      </div>
     </div>
   </div>
 </template>

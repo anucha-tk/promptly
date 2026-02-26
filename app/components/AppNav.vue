@@ -101,6 +101,11 @@ function isActive(to: string) {
               </template>
               <template v-else>
                 <DrawerClose as-child>
+                  <NuxtLink to="/register">
+                    <Button variant="outline" class="w-full">Sign up</Button>
+                  </NuxtLink>
+                </DrawerClose>
+                <DrawerClose as-child>
                   <NuxtLink to="/login">
                     <Button variant="default" class="w-full">Sign in</Button>
                   </NuxtLink>
@@ -132,6 +137,9 @@ function isActive(to: string) {
           <Button variant="ghost" size="sm" class="ml-2" @click="logout()"> Sign out </Button>
         </template>
         <template v-else>
+          <NuxtLink to="/register">
+            <Button variant="outline" size="sm" class="ml-2">Sign up</Button>
+          </NuxtLink>
           <NuxtLink to="/login">
             <Button size="sm" class="ml-2">Sign in</Button>
           </NuxtLink>

@@ -1,4 +1,6 @@
+import { getAdminAuth } from '../utils/firebaseAdmin';
 import { sendErrorResp } from '../utils/response';
+
 export default defineEventHandler(async (event) => {
   // 1. กรองให้รันเฉพาะ path ที่ขึ้นต้นด้วย /api
   if (!event.path.startsWith('/api')) {
@@ -14,15 +16,22 @@ export default defineEventHandler(async (event) => {
     : getRequestHeader(event, 'x-firebase-token');
 
   if (!token) {
+    sendErrorResp(401, 'Missing auth token');
     return;
   }
 
   try {
-    const decodedToken = await getAdminAuth().verifyIdToken(token);
+    const auth = getAdminAuth();
+    const decodedToken = await auth.verifyIdToken(token);
 
     event.context.user = decodedToken;
     event.context.uid = decodedToken.uid;
   } catch (error: unknown) {
-    sendErrorResp(401, error instanceof Error ? error.message : 'Unauthorized');
+    // Log for debugging (token invalid, expired, or FIREBASE_SERVICE_ACCOUNT wrong/missing)
+    console.error(
+      '[auth middleware] verifyIdToken failed:',
+      error instanceof Error ? error.message : String(error)
+    );
+    sendErrorResp(401, 'Unauthorized');
   }
 });

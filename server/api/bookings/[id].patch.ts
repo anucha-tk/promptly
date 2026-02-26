@@ -5,7 +5,7 @@ import {
   bookingStatusSchema,
   type BookingResponse,
   type BookingStatus,
-} from '../../../shared/schemas/booking';
+} from '~shared/schemas/booking';
 import { getAdminFirestore } from '../../utils/firebaseAdmin';
 import { requireUser } from '../../utils/getCurrentUser';
 import { sendErrorResp } from '../../utils/response';
@@ -26,10 +26,11 @@ export default defineEventHandler(async (event): Promise<BookingResponse> => {
   const user = requireUser(event);
   if (!user) return undefined as never;
 
-  const id = getRouterParam(event, 'id');
-  if (!id) {
+  const rawId = getRouterParam(event, 'id');
+  if (rawId == null) {
     sendErrorResp(400, 'Booking ID is required');
   }
+  const id = rawId as string;
 
   const body = await readBody(event);
   const parsed = patchBodySchema.safeParse(body);
@@ -38,7 +39,7 @@ export default defineEventHandler(async (event): Promise<BookingResponse> => {
     const first = Object.values(msg).flat().find(Boolean);
     sendErrorResp(400, first ?? 'Validation failed');
   }
-  const { status: newStatus } = parsed.data;
+  const newStatus = (parsed as { data: { status: BookingStatus } }).data.status;
   const uid = event.context.uid as string;
 
   const db = getAdminFirestore();

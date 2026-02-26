@@ -15,6 +15,20 @@ export const createBookingSchema = z
 
 export type CreateBookingInput = z.infer<typeof createBookingSchema>;
 
+/** One selectable slot (e.g. for "choose slot" step or list-availability API). */
+export const availabilitySlotSchema = z
+  .object({
+    providerId: z.string(),
+    slotStart: z.coerce.date(),
+    slotEnd: z.coerce.date(),
+  })
+  .refine((data) => data.slotEnd > data.slotStart, {
+    message: 'slotEnd must be after slotStart',
+    path: ['slotEnd'],
+  });
+
+export type AvailabilitySlot = z.infer<typeof availabilitySlotSchema>;
+
 const bookingStatusEnum = z.enum(['pending', 'confirmed', 'in_progress', 'completed', 'cancelled']);
 
 /** Response shape for a booking (create or get). */

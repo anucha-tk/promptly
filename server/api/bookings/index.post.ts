@@ -3,7 +3,7 @@ import {
   createBookingSchema,
   type CreateBookingInput,
   type BookingResponse,
-} from '../../../shared/schemas/booking';
+} from '~shared/schemas/booking';
 import { getAdminFirestore } from '../../utils/firebaseAdmin';
 import { requireUser } from '../../utils/getCurrentUser';
 import { sendErrorResp } from '../../utils/response';
@@ -19,7 +19,7 @@ export default defineEventHandler(async (event): Promise<BookingResponse> => {
     const first = Object.values(msg).flat().find(Boolean);
     sendErrorResp(400, first ?? 'Validation failed');
   }
-  const payload: CreateBookingInput = parsed.data;
+  const payload = parsed.data as CreateBookingInput;
   const clientUid = payload.clientUid ?? (event.context.uid as string);
 
   const db = getAdminFirestore();
