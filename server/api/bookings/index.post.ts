@@ -21,6 +21,8 @@ export default defineEventHandler(async (event): Promise<BookingResponse> => {
   }
   const payload = parsed.data as CreateBookingInput;
   const clientUid = payload.clientUid ?? (event.context.uid as string);
+  const decoded = event.context.user as { name?: string; email?: string } | undefined;
+  const clientDisplayName = decoded?.name?.trim() || decoded?.email?.trim() || null;
 
   const db = getAdminFirestore();
   const bookingsRef = db.collection('bookings');
@@ -44,6 +46,7 @@ export default defineEventHandler(async (event): Promise<BookingResponse> => {
       }
       transaction.set(newRef, {
         clientUid,
+        clientDisplayName,
         providerId: payload.providerId,
         slotStart: slotStartTs,
         slotEnd: slotEndTs,

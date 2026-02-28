@@ -1,10 +1,12 @@
-import { initializeApp, getApps, cert, getApp } from 'firebase-admin/app';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
 export const initAdmin = () => {
-  if (getApps().length > 0) {
-    return getApp();
+  const apps = getApps();
+  const existing = apps[0];
+  if (existing) {
+    return existing;
   }
 
   const saData = process.env.FIREBASE_SERVICE_ACCOUNT;
