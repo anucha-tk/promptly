@@ -14,5 +14,11 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if false; // เขียนผ่าน Admin SDK เท่านั้น
     }
+
+    // Availability slots: อ่านได้เมื่อล็อกอิน; เขียนผ่าน Admin SDK เท่านั้น (หรือ provider ในอนาคต)
+    match /availability/{slotId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
   }
 }

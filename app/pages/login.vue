@@ -32,19 +32,19 @@ const onSubmit = form.handleSubmit(async (values) => {
 <template>
   <div class="flex flex-1 flex-col items-center justify-center px-4 py-12">
     <div class="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">
-      <h1 class="text-2xl font-bold tracking-tight text-foreground">Sign in</h1>
-      <p class="mt-1 text-sm text-muted-foreground">Use your email and password.</p>
+      <h1 class="text-2xl font-bold tracking-tight text-foreground">เข้าสู่ระบบ</h1>
+      <p class="mt-1 text-sm text-muted-foreground">ใช้อีเมลและรหัสผ่านของคุณ</p>
 
       <form class="mt-6 space-y-4" @submit="onSubmit">
         <FormField v-slot="{ field, handleChange, handleBlur }" name="email">
           <FormItem>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>อีเมล</FormLabel>
             <FormControl>
               <Input
                 :model-value="field.value"
                 type="email"
                 autocomplete="email"
-                placeholder="you@example.com"
+                placeholder="คุณ@ตัวอย่าง.com"
                 :disabled="isPending"
                 @update:model-value="handleChange"
                 @blur="handleBlur"
@@ -56,7 +56,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
         <FormField v-slot="{ field, handleChange, handleBlur }" name="password">
           <FormItem>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>รหัสผ่าน</FormLabel>
             <FormControl>
               <Input
                 :model-value="field.value"
@@ -77,12 +77,12 @@ const onSubmit = form.handleSubmit(async (values) => {
         </p>
 
         <Button type="submit" class="w-full" :disabled="isPending">
-          {{ isPending ? 'Signing in…' : 'Sign in' }}
+          {{ isPending ? 'กำลังเข้าสู่ระบบ…' : 'เข้าสู่ระบบ' }}
         </Button>
       </form>
 
       <p class="mt-6 text-center text-sm text-muted-foreground">
-        Don't have an account?
+        ยังไม่มีบัญชี?
         <NuxtLink
           :to="
             '/register' +
@@ -92,12 +92,12 @@ const onSubmit = form.handleSubmit(async (values) => {
           "
           class="text-primary underline-offset-4 hover:underline"
         >
-          Sign up
+          สมัครสมาชิก
         </NuxtLink>
       </p>
       <p class="mt-2 text-center text-sm text-muted-foreground">
         <NuxtLink to="/" class="text-primary underline-offset-4 hover:underline">
-          Back to home
+          กลับหน้าแรก
         </NuxtLink>
       </p>
     </div>

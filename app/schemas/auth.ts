@@ -2,11 +2,8 @@ import { z } from 'zod';
 
 /** Login form schema. Reuse on server for API validation if needed (ARCHITECT_CONTEXT: type-safe contract). */
 export const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z
-    .string()
-    .min(1, 'Password is required')
-    .min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('ที่อยู่อีเมลไม่ถูกต้อง'),
+  password: z.string().min(1, 'กรุณากรอกรหัสผ่าน').min(6, 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
@@ -14,15 +11,12 @@ export type LoginInput = z.infer<typeof loginSchema>;
 /** Register (sign up) form schema. */
 export const registerSchema = z
   .object({
-    email: z.string().email('Invalid email address'),
-    password: z
-      .string()
-      .min(1, 'Password is required')
-      .min(6, 'Password must be at least 6 characters'),
-    confirmPassword: z.string().min(1, 'Please confirm your password'),
+    email: z.string().email('ที่อยู่อีเมลไม่ถูกต้อง'),
+    password: z.string().min(1, 'กรุณากรอกรหัสผ่าน').min(6, 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'),
+    confirmPassword: z.string().min(1, 'กรุณายืนยันรหัสผ่าน'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: 'รหัสผ่านไม่ตรงกัน',
     path: ['confirmPassword'],
   });
 

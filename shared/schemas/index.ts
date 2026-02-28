@@ -13,4 +13,16 @@ export {
   type BookingStatus,
 } from './booking';
 
-export { providerSummarySchema, type ProviderSummary } from './provider';
+export {
+  providerSummarySchema,
+  createProviderSchema,
+  type ProviderSummary,
+  type CreateProviderInput,
+} from './provider';
+
+export {
+  availabilityDocSchema,
+  createAvailabilitySchema,
+  type AvailabilityDoc,
+  type CreateAvailabilityInput,
+} from './availability';

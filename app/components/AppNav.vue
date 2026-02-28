@@ -19,12 +19,18 @@ const isSm = breakpoints.smaller('md');
 
 const navItems = computed(() => {
   const base = [
-    { label: 'Home', to: '/' },
-    { label: 'About', to: '/about' },
-    { label: 'Contact', to: '/contact' },
+    { label: 'หน้าแรก', to: '/' },
+    { label: 'เกี่ยวกับเรา', to: '/about' },
+    { label: 'ติดต่อเรา', to: '/contact' },
   ];
   if (user.value) {
-    base.splice(1, 0, { label: 'Booking', to: '/bookings' });
+    base.splice(
+      1,
+      0,
+      { label: 'การจอง', to: '/bookings' },
+      { label: 'เพิ่มผู้ให้บริการ', to: '/providers/new' },
+      { label: 'เพิ่มช่วงว่าง', to: '/availability/new' }
+    );
   }
   return base;
 });
@@ -41,14 +47,14 @@ function isActive(to: string) {
   >
     <div class="flex h-14 items-center justify-between px-4">
       <NuxtLink to="/" class="flex items-center gap-2 font-semibold">
-        <span class="text-foreground">CleanSync</span>
+        <span class="text-foreground">Promptly</span>
       </NuxtLink>
 
       <!-- sm: drawer -->
       <div v-if="isSm" class="flex items-center gap-2 md:hidden">
         <Drawer>
           <DrawerTrigger as-child>
-            <Button variant="ghost" size="icon" aria-label="Open menu">
+            <Button variant="ghost" size="icon" aria-label="เปิดเมนู">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -68,7 +74,7 @@ function isActive(to: string) {
           </DrawerTrigger>
           <DrawerContent class="w-[280px] max-w-[85vw]">
             <DrawerHeader>
-              <DrawerTitle>Menu</DrawerTitle>
+              <DrawerTitle>เมนู</DrawerTitle>
             </DrawerHeader>
             <nav class="flex flex-col gap-1 px-4 pb-6">
               <DrawerClose
@@ -95,19 +101,19 @@ function isActive(to: string) {
               <template v-if="user">
                 <DrawerClose as-child class="[&>button]:w-full [&>button]:justify-start">
                   <Button variant="ghost" class="w-full justify-start" @click="logout()">
-                    Sign out
+                    ออกจากระบบ
                   </Button>
                 </DrawerClose>
               </template>
               <template v-else>
                 <DrawerClose as-child>
                   <NuxtLink to="/register">
-                    <Button variant="outline" class="w-full">Sign up</Button>
+                    <Button variant="outline" class="w-full">สมัครสมาชิก</Button>
                   </NuxtLink>
                 </DrawerClose>
                 <DrawerClose as-child>
                   <NuxtLink to="/login">
-                    <Button variant="default" class="w-full">Sign in</Button>
+                    <Button variant="default" class="w-full">เข้าสู่ระบบ</Button>
                   </NuxtLink>
                 </DrawerClose>
               </template>
@@ -134,14 +140,14 @@ function isActive(to: string) {
           {{ item.label }}
         </NuxtLink>
         <template v-if="user">
-          <Button variant="ghost" size="sm" class="ml-2" @click="logout()"> Sign out </Button>
+          <Button variant="ghost" size="sm" class="ml-2" @click="logout()"> ออกจากระบบ </Button>
         </template>
         <template v-else>
           <NuxtLink to="/register">
-            <Button variant="outline" size="sm" class="ml-2">Sign up</Button>
+            <Button variant="outline" size="sm" class="ml-2">สมัครสมาชิก</Button>
           </NuxtLink>
           <NuxtLink to="/login">
-            <Button size="sm" class="ml-2">Sign in</Button>
+            <Button size="sm" class="ml-2">เข้าสู่ระบบ</Button>
           </NuxtLink>
         </template>
       </nav>

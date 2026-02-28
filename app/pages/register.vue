@@ -32,19 +32,19 @@ const onSubmit = form.handleSubmit(async (values) => {
 <template>
   <div class="flex flex-1 flex-col items-center justify-center px-4 py-12">
     <div class="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm md:p-8">
-      <h1 class="text-2xl font-bold tracking-tight text-foreground">Sign up</h1>
-      <p class="mt-1 text-sm text-muted-foreground">Create an account with your email.</p>
+      <h1 class="text-2xl font-bold tracking-tight text-foreground">สมัครสมาชิก</h1>
+      <p class="mt-1 text-sm text-muted-foreground">สร้างบัญชีด้วยอีเมลของคุณ</p>
 
       <form class="mt-6 space-y-4" @submit="onSubmit">
         <FormField v-slot="{ field, handleChange, handleBlur }" name="email">
           <FormItem>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>อีเมล</FormLabel>
             <FormControl>
               <Input
                 :model-value="field.value"
                 type="email"
                 autocomplete="email"
-                placeholder="you@example.com"
+                placeholder="คุณ@ตัวอย่าง.com"
                 :disabled="isPending"
                 @update:model-value="handleChange"
                 @blur="handleBlur"
@@ -56,7 +56,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
         <FormField v-slot="{ field, handleChange, handleBlur }" name="password">
           <FormItem>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>รหัสผ่าน</FormLabel>
             <FormControl>
               <Input
                 :model-value="field.value"
@@ -74,7 +74,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
         <FormField v-slot="{ field, handleChange, handleBlur }" name="confirmPassword">
           <FormItem>
-            <FormLabel>Confirm password</FormLabel>
+            <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
             <FormControl>
               <Input
                 :model-value="field.value"
@@ -95,12 +95,12 @@ const onSubmit = form.handleSubmit(async (values) => {
         </p>
 
         <Button type="submit" class="w-full" :disabled="isPending">
-          {{ isPending ? 'Creating account…' : 'Sign up' }}
+          {{ isPending ? 'กำลังสร้างบัญชี…' : 'สมัครสมาชิก' }}
         </Button>
       </form>
 
       <p class="mt-6 text-center text-sm text-muted-foreground">
-        Already have an account?
+        มีบัญชีอยู่แล้ว?
         <NuxtLink
           :to="
             '/login' +
@@ -110,12 +110,12 @@ const onSubmit = form.handleSubmit(async (values) => {
           "
           class="text-primary underline-offset-4 hover:underline"
         >
-          Sign in
+          เข้าสู่ระบบ
         </NuxtLink>
       </p>
       <p class="mt-2 text-center text-sm text-muted-foreground">
         <NuxtLink to="/" class="text-primary underline-offset-4 hover:underline">
-          Back to home
+          กลับหน้าแรก
         </NuxtLink>
       </p>
     </div>

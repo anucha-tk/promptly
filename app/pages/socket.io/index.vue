@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 text-center text-gray-500">
-    No Socket.IO server at this path. If you see this, a browser extension or dev tool may be
-    probing for Socket.IO.
+    ไม่มี Socket.IO server ที่ path นี้ ถ้าคุณเห็นข้อความนี้ อาจเป็นจาก extension หรือ dev tool
+    ที่กำลังตรวจหา Socket.IO
   </div>
 </template>
 

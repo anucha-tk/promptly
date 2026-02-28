@@ -6,20 +6,19 @@
         <h1
           class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          On-demand service,
-          <span class="text-primary">done right</span>
+          บริการตาม demand
+          <span class="text-primary">ทำได้ถูกต้อง</span>
         </h1>
         <p class="text-muted-foreground text-lg md:text-xl">
-          Book, track, and manage services in one place. CleanSync keeps everything in sync with
-          zero-trust auth and reliable transactions.
+          จอง ติดตาม และจัดการบริการในที่เดียว พร้อมระบบยืนยันตัวตนและธุรกรรมการจองที่เชื่อถือได้
         </p>
       </div>
       <div class="flex flex-wrap items-center justify-center gap-4">
         <NuxtLink to="/bookings">
-          <Button size="lg" class="shadow-md"> View bookings </Button>
+          <Button size="lg" class="shadow-md"> ดูการจอง </Button>
         </NuxtLink>
         <NuxtLink v-if="!user" to="/login">
-          <Button variant="outline" size="lg"> Sign in </Button>
+          <Button variant="outline" size="lg"> เข้าสู่ระบบ </Button>
         </NuxtLink>
       </div>
     </section>
@@ -28,23 +27,23 @@
     <section class="border-t border-border bg-muted/30">
       <div class="grid gap-8 px-4 py-12 sm:grid-cols-2 md:grid-cols-3 md:py-16">
         <div class="flex flex-col gap-2 rounded-lg border border-border bg-card p-6 shadow-sm">
-          <h3 class="font-semibold text-foreground">Single engine</h3>
+          <h3 class="font-semibold text-foreground">ระบบเดียว</h3>
           <p class="text-muted-foreground text-sm">
-            All logic in Nitro; no separate API. One repo, one deploy.
+            Logic อยู่ใน Nitro ไม่แยก API โปรเจกต์เดียว deploy ครั้งเดียว
           </p>
         </div>
         <div class="flex flex-col gap-2 rounded-lg border border-border bg-card p-6 shadow-sm">
-          <h3 class="font-semibold text-foreground">Atomic bookings</h3>
+          <h3 class="font-semibold text-foreground">จองแบบอะตอมมิก</h3>
           <p class="text-muted-foreground text-sm">
-            Firestore transactions prevent double-booking and race conditions.
+            ใช้ Firestore transaction ป้องกันการจองซ้อนและ race condition
           </p>
         </div>
         <div
           class="flex flex-col gap-2 rounded-lg border border-border bg-card p-6 shadow-sm sm:col-span-2 md:col-span-1"
         >
-          <h3 class="font-semibold text-foreground">Zero-trust auth</h3>
+          <h3 class="font-semibold text-foreground">ยืนยันตัวตน</h3>
           <p class="text-muted-foreground text-sm">
-            Every protected request validates the token on the server.
+            ทุก request ที่ต้องล็อกอินจะตรวจสอบ token ที่ server
           </p>
         </div>
       </div>
@@ -56,17 +55,15 @@
         class="mx-auto max-w-2xl rounded-xl border border-border bg-card p-8 text-center shadow-sm md:p-10"
       >
         <h2 class="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          Ready to get started?
+          พร้อมเริ่มต้นแล้ว?
         </h2>
-        <p class="mt-2 text-muted-foreground">
-          Sign in or create an account to manage your bookings.
-        </p>
+        <p class="mt-2 text-muted-foreground">เข้าสู่ระบบหรือสร้างบัญชีเพื่อจัดการการจอง</p>
         <div class="mt-6 flex flex-wrap justify-center gap-3">
           <NuxtLink to="/login">
-            <Button>Sign in</Button>
+            <Button>เข้าสู่ระบบ</Button>
           </NuxtLink>
           <NuxtLink to="/about">
-            <Button variant="outline">About us</Button>
+            <Button variant="outline">เกี่ยวกับเรา</Button>
           </NuxtLink>
         </div>
       </div>

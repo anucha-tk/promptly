@@ -7,3 +7,11 @@ export const providerSummarySchema = z.object({
 });
 
 export type ProviderSummary = z.infer<typeof providerSummarySchema>;
+
+/** Body for POST /api/providers. */
+export const createProviderSchema = z.object({
+  displayName: z.string().min(1, 'กรุณากรอกชื่อผู้ให้บริการ'),
+  email: z.string().optional(),
+});
+
+export type CreateProviderInput = z.infer<typeof createProviderSchema>;

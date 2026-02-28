@@ -3,13 +3,13 @@ import { z } from 'zod';
 /** Body for POST /api/bookings. clientUid is optional; server fills from token. */
 export const createBookingSchema = z
   .object({
-    providerId: z.string().min(1, 'Provider is required'),
+    providerId: z.string().min(1, 'กรุณาเลือกผู้ให้บริการ'),
     slotStart: z.coerce.date(),
     slotEnd: z.coerce.date(),
     clientUid: z.string().optional(),
   })
   .refine((data) => data.slotEnd > data.slotStart, {
-    message: 'slotEnd must be after slotStart',
+    message: 'เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม',
     path: ['slotEnd'],
   });
 
@@ -23,7 +23,7 @@ export const availabilitySlotSchema = z
     slotEnd: z.coerce.date(),
   })
   .refine((data) => data.slotEnd > data.slotStart, {
-    message: 'slotEnd must be after slotStart',
+    message: 'เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม',
     path: ['slotEnd'],
   });
 

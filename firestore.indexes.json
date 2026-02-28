@@ -7,6 +7,14 @@
         { "fieldPath": "providerId", "order": "ASCENDING" },
         { "fieldPath": "slotStart", "order": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "availability",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "providerId", "order": "ASCENDING" },
+        { "fieldPath": "slotStart", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

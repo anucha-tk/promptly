@@ -35,14 +35,25 @@ function statusClass(status: string): string {
   };
   return map[status] ?? 'bg-muted text-muted-foreground';
 }
+
+const statusLabels: Record<string, string> = {
+  pending: 'รอดำเนินการ',
+  confirmed: 'ยืนยันแล้ว',
+  in_progress: 'กำลังดำเนินการ',
+  completed: 'เสร็จสิ้น',
+  cancelled: 'ยกเลิก',
+};
+function statusLabel(status: string): string {
+  return statusLabels[status] ?? status;
+}
 </script>
 
 <template>
   <div class="px-4 py-8">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <h1 class="text-3xl font-bold tracking-tight text-foreground">My Bookings</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-foreground">การจองของฉัน</h1>
       <NuxtLink v-if="user" to="/bookings/new">
-        <Button>New booking</Button>
+        <Button>จองใหม่</Button>
       </NuxtLink>
     </div>
 
@@ -50,9 +61,9 @@ function statusClass(status: string): string {
       v-if="!user"
       class="mt-6 rounded-lg border border-border bg-card p-6 text-center shadow-sm"
     >
-      <p class="font-medium text-foreground">Please log in to see your bookings.</p>
+      <p class="font-medium text-foreground">กรุณาเข้าสู่ระบบเพื่อดูการจองของคุณ</p>
       <NuxtLink to="/login" class="mt-4 inline-block">
-        <Button>Sign in</Button>
+        <Button>เข้าสู่ระบบ</Button>
       </NuxtLink>
     </div>
 
@@ -61,9 +72,9 @@ function statusClass(status: string): string {
         v-if="!bookings?.length"
         class="mt-6 rounded-lg border-2 border-dashed border-border py-12 text-center"
       >
-        <p class="text-muted-foreground">No bookings yet.</p>
+        <p class="text-muted-foreground">ยังไม่มีรายการจอง</p>
         <NuxtLink to="/bookings/new" class="mt-4 inline-block">
-          <Button>Create your first booking</Button>
+          <Button>สร้างการจองแรก</Button>
         </NuxtLink>
       </div>
 
@@ -75,7 +86,7 @@ function statusClass(status: string): string {
         >
           <div class="min-w-0">
             <p class="font-semibold text-foreground">
-              {{ booking.clientDisplayName ?? 'Anonymous' }}
+              {{ booking.clientDisplayName ?? 'ไม่ระบุชื่อ' }}
             </p>
             <p class="text-muted-foreground text-sm">
               {{ formatSlot(booking.slotStart) }}
@@ -86,10 +97,10 @@ function statusClass(status: string): string {
               class="inline-flex rounded-full px-3 py-1 text-xs font-medium uppercase"
               :class="statusClass(booking.status ?? 'pending')"
             >
-              {{ booking.status ?? 'pending' }}
+              {{ statusLabel(booking.status ?? 'pending') }}
             </span>
             <NuxtLink :to="`/bookings/${booking.id}`">
-              <Button variant="outline" size="sm"> Details → </Button>
+              <Button variant="outline" size="sm"> รายละเอียด → </Button>
             </NuxtLink>
           </div>
         </div>
